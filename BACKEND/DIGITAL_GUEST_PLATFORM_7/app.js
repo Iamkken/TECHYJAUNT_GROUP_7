@@ -4,6 +4,8 @@ const authenticateUser = require('./middleware/authMiddleware');
 const hotelRoutes = require('./routes/hotelRoutes');
 const roomRoutes = require('./routes/roomRoutes');
 const availabilityRoutes = require('./routes/availabilityRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
+
 
 const app = express();
 
@@ -15,6 +17,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/hotels', hotelRoutes);
 app.use('/api/rooms', roomRoutes);
 app.use('/api/availability', availabilityRoutes);
+app.use('/api/bookings', bookingRoutes);
+
 
 
 
