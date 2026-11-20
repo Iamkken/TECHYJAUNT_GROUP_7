@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const authenticateUser = require('./middleware/authMiddleware');
 const hotelRoutes = require('./routes/hotelRoutes');
@@ -8,7 +9,12 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 
+
 const app = express();
+
+app.use(cors({
+    origin: 'http://localhost:5173'
+}));
 
 app.use(express.json());
 
