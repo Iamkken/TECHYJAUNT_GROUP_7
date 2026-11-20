@@ -158,5 +158,55 @@ const createBooking = async (req, res) => {
     }
 };
 
-module.exports = { createBooking };
+
+
+
+const getMyBookings = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        const result = await pool.query(
+            `SELECT
+                b.id AS booking_id,
+                h.name AS hotel_name,
+                h.location AS hotel_location,
+                r.room_type,
+                r.price_per_night,
+                b.check_in,
+                b.check_out,
+                b.guest_count,
+                b.total_amount,
+                b.booking_status,
+                p.payment_reference,
+                p.payment_status,
+                p.confirmed_at AS payment_confirmed_at
+             FROM bookings b
+             JOIN rooms r ON b.room_id = r.id
+             JOIN hotels h ON r.hotel_id = h.id
+             LEFT JOIN payments p ON b.id = p.booking_id
+             WHERE b.user_id = $1
+             ORDER BY b.created_at DESC`,
+            [userId]
+        );
+
+        return res.status(200).json({
+            message: 'Your bookings retrieved successfully.',
+            total_bookings: result.rows.length,
+            bookings: result.rows
+        });
+
+    } catch (error) {
+        console.error('Get my bookings error:', error);
+
+        return res.status(500).json({
+            message: 'An error occurred while retrieving your bookings.'
+        });
+    }
+};
+
+
+module.exports = {
+    createBooking,
+    getMyBookings
+};
 
